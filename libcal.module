@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains libcal.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function libcal_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the libcal module.
+    case 'help.page.libcal':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module is integrate Libcal API and feed to drupal') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function libcal_theme() {
+  return [
+    'libcal' => [
+      'render element' => 'children',
+    ],
+  ];
+}

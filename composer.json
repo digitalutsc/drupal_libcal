@@ -1,0 +1,13 @@
+{
+    "name": "libcal",
+    "type": "drupal-module",
+    "description": "This module is integrate Libcal API and feed to drupal",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/libcal",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/libcal",
+        "source": "http://cgit.drupalcode.org/libcal",
+    },
+}

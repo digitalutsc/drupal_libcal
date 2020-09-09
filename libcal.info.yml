@@ -1,0 +1,5 @@
+name: 'Libcal'
+type: module
+description: 'This module is integrate Libcal API and feed to drupal'
+core: 8.x
+package: 'Custom'
