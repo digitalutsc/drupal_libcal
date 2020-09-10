@@ -4,6 +4,7 @@ namespace Drupal\libcal;
 
 use GuzzleHttp\Exception\RequestException;
 use Masterminds\HTML5\Exception;
+use Drupal\node\Entity\Node;
 
 /**
  * Class EventDownloadService.
@@ -26,19 +27,20 @@ class EventDownloadService implements EventDownloadServiceInterface
     try {
       $response = \Drupal::httpClient()->post("https://libcal.library.utoronto.ca/1.1/oauth/token", [
         'json' => [
-          'client_id' =>$config->get("client_id"),
+          'client_id' => $config->get("client_id"),
           'client_secret' => $config->get("client_secret"),
           'grant_type' => "client_credentials",
         ]
       ]);
       return json_decode((string)$response->getBody());
-    }catch(RequestException $e) {
-      print_r ($e->getMessage());
+    } catch (RequestException $e) {
+      print_r($e->getMessage());
       return null;
     }
   }
 
-  public function get($params) {
+  public function get($params)
+  {
     if (empty($params)) {
       throw new \Exception("keyword must be valid");
     }
@@ -57,16 +59,85 @@ class EventDownloadService implements EventDownloadServiceInterface
       $response = curl_exec($curl);
       //print_log($response);
       return json_decode($response);
-    }catch (RequestException $e) {
-      print_log ($e->getMessage());
+    } catch (RequestException $e) {
+      print_log($e->getMessage());
       return null;
     }
   }
 
-  public function eventToNode(object $event) {
+  public function libcalEventToNode(array $events)
+  {
+    foreach ($events as $event) {
+      $query = \Drupal::entityQuery('node');
+      $query->condition('status', 1);
+      $query->condition('type', "blog");
+      $query->condition('field_libcal_eventid', $event->id);
+      $nids = $query->execute();
+
+      $startdate = explode("-", $event->start);
+      array_pop($startdate);
+      $startdate = implode("-", $startdate);
+
+      $enddate = explode("-", $event->end);
+      array_pop($enddate);
+      $enddate = implode("-", $enddate);
+
+      $eventLink =  [
+        'uri' => $event->url->public,
+        'title' => 'event public link',
+        'options' => ['attributes' => [
+          'target' => '_blank'
+        ]]
+      ];
+
+      if (count($nids) <= 0) {
+        // create new event node
+        $params = [
+          // The node entity bundle.
+          'type' => 'blog',
+          'langcode' => 'en',
+          'created' => time(),
+          'changed' => time(),
+          // The user ID.
+          'uid' => 1,
+          'moderation_state' => 'published',
+          'title' => $event->title,
+          'body' => [
+            'summary' => substr(strip_tags($event->description), 0, 100),
+            'value' => $event->description,
+            'format' => 'full_html'
+          ],
+          'field_event_date' => $startdate,
+          'field_event_end_date' => $enddate,
+          'field_libcal_eventid' => $event->id, // need to make sure it's unique
+          'field_libcal_feature_image' => $event->featured_image,
+          'field_registration_link' =>$eventLink
+        ];
+        //print_log($params);
+        $node = Node::create($params);
+        $node->save();
+      } else {
+        // update existing Event node
+        $eventNode = Node::load(array_keys($nids)[0]);
+        $eventNode->set('changed', time());
+        // The user ID.
+        $eventNode->set('title', $event->title);
+        $eventNode->set('body', [
+          'summary' => substr(strip_tags($event->description), 0, 100),
+          'value' => $event->description,
+          'format' => 'full_html'
+        ]);
+        $eventNode->set('field_event_date', $startdate);
+        $eventNode->set('field_event_end_date', $enddate);
+        $eventNode->set('field_libcal_eventid', $event->id); // need to make sure it's unique
+        $eventNode->set('field_libcal_feature_image', $event->featured_image);
+        $eventNode->set('field_registration_link',$eventLink);
+        $eventNode->save();
+      }
+
+    }
 
   }
-
 
 
 }

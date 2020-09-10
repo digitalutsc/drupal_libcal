@@ -128,14 +128,16 @@ class LibcalAPIConfigForm extends ConfigFormBase
   public function submitFormCalendars(array &$form, FormStateInterface $form_state)
   {
     $service = \Drupal::service('libcal.download');
-    $result = $service->get("calendars/2021");
+    $result = $service->get("calendars");
     print_log($result);
   }
   public function submitFormEvent(array &$form, FormStateInterface $form_state)
   {
     $service = \Drupal::service('libcal.download');
-    $result = $service->get("events?cal_id=2021");
+    $result = $service->get("events?cal_id=2020")->events;
     print_log($result);
+    $service->libcalEventToNode($result);
+
   }
 
 
