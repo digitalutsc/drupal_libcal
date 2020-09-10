@@ -1,5 +1,5 @@
-name: 'Libcal'
+name: 'LibCal Integration'
 type: module
 description: 'This module is integrate Libcal API and feed to drupal'
-core: 8.x
-package: 'Custom'
+core_version_requirement: '^8.8 || ^9'
+package: 'DSU'

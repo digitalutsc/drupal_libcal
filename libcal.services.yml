@@ -1,0 +1,7 @@
+services:
+  logger.channel.libcal:
+    parent: logger.channel_base
+    arguments: ['libcal']
+  libcal.download:
+    class: Drupal\libcal\EventDownloadService
+    arguments: []

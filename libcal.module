@@ -33,3 +33,24 @@ function libcal_theme() {
     ],
   ];
 }
+
+/**
+ * Debug function: display any variable to error log
+ *
+ * @param $thing
+ */
+function print_log($thing)
+{
+  error_log(print_r($thing, true), 0);
+}
+
+/**
+ * Debug function: display any variable to current webpage
+ * @param $thing
+ */
+function logging($thing)
+{
+  echo "<pre>";
+  print_r($thing);
+  echo "</pre>";
+}
