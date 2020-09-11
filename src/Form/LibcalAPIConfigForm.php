@@ -77,7 +77,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
     $form['test-api-accesstoken']['results']['output'] = array(
       '#type' => 'textarea',
       '#title' => 'Result: ',
-      '#default_value' => \Drupal::service('user.private_tempstore')->get('libcal.api.testing')->get('output_accesstoken')
+      '#default_value' => \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('output_accesstoken')
     );
 
     $form['test-api-getCalendar'] = array(
@@ -103,7 +103,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
     $form['test-api-getCalendar']['results']['output'] = array(
       '#type' => 'textarea',
       '#title' => 'Result: ',
-      '#default_value' => \Drupal::service('user.private_tempstore')->get('libcal.api.testing')->get('output_calendar')
+      '#default_value' => \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('output_calendar')
     );
 
     $form['test-api-getEvent'] = array(
@@ -118,7 +118,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
     $form['test-api-getEvent']['container']['cal_id'] = array(
       '#type' => 'textfield',
       '#title' => "Calendar ID:",
-      '#default_value' => \Drupal::service('user.private_tempstore')->get('libcal.api.testing')->get('testing-calid')
+      '#default_value' => \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('testing-calid')
     );
     $form['test-api-getEvent']['container']['submit-get-events'] = array(
       '#type' => 'submit',
@@ -133,7 +133,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
     $form['test-api-getEvent']['results']['output'] = array(
       '#type' => 'textarea',
       '#title' => 'Result: ',
-      '#default_value' => \Drupal::service('user.private_tempstore')->get('libcal.api.testing')->get('output_events')
+      '#default_value' => \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('output_events')
     );
 
 
@@ -145,7 +145,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
     $service = \Drupal::service('libcal.download');
     $result = $service->postAccessToken();
 
-    $tempstore = \Drupal::service('user.private_tempstore')->get('libcal.api.testing');
+    $tempstore = \Drupal::service('tempstore.private')->get('libcal.api.testing');
     $tempstore->set('output_accesstoken', print_r($result, true));
   }
 
@@ -154,7 +154,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
     $service = \Drupal::service('libcal.download');
     $result = $service->get("calendars");
 
-    $tempstore = \Drupal::service('user.private_tempstore')->get('libcal.api.testing');
+    $tempstore = \Drupal::service('tempstore.private')->get('libcal.api.testing');
     $tempstore->set('output_calendar', print_r($result, true));
   }
 
@@ -164,7 +164,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
     $service = \Drupal::service('libcal.download');
     $result = $service->get("events?cal_id=" . $form_state->getValues()['cal_id'])->events;
 
-    $tempstore = \Drupal::service('user.private_tempstore')->get('libcal.api.testing');
+    $tempstore = \Drupal::service('tempstore.private')->get('libcal.api.testing');
     $tempstore->set('output_events', print_r($result, true));
     $tempstore->set('testing-calid', $form_state->getValues()['cal_id']);
 
