@@ -1,6 +1,6 @@
 libcal.libcal_api_config_form:
   title: 'LibCal API Configuration'
   route_name: libcal.libcal_api_config_form
-  description: 'A description for the menu entry'
+  description: 'Configure LibCal API Integration '
   parent: system.admin_config_system
   weight: 99

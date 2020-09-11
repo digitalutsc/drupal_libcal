@@ -75,7 +75,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
             '#attributes' => ['class' => ['layout-column layout-column--half'], 'style' => "left: 10px !important"],
         );
         $form['container']['manually']['description'] = array(
-            '#markup' => $this->t('<p>Current set download events from LibCal (UTSC Calendar Only) automatically in cron at 8a.m daily. If there is updates which need to be download immediately, please click the below button, it will do exactly same job.</p>')
+            '#markup' => $this->t('<p>Currently set download events from LibCal (UTSC Calendar Only) automatically in cron job at 8a.m daily. If there are updated events which need to be downloaded immediately, please click the below button, it will do exactly same job.</p>')
         );
 
         $form['container']['manually']['submit-manually-download-events'] = array(
