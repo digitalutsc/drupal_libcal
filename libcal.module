@@ -7,6 +7,8 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 
+define("LIBCAL_UTSC_CALID", 2021);
+
 /**
  * Implements hook_help().
  */
@@ -32,6 +34,23 @@ function libcal_theme() {
       'render element' => 'children',
     ],
   ];
+}
+
+function libcal_cron() {
+  //print_log("execute download data from LibCal automatically");
+  // setup cron job:
+  // crontab -e
+  // add   0 8 * * * curl {{ cron URL }} at 8 a.m daily
+  // add   0 * * * * curl {{ cron URL }} at every 1 hour
+  // add   0 0 * * 0 curl {{ cron URL }} at every week
+  // add   0 0 1 * * curl {{ cron URL }} at every month
+
+  $service = \Drupal::service('libcal.download');
+  //$result = $service->get("events?cal_id=7288")->events;
+  $result = $service->get("events?cal_id=". LIBCAL_UTSC_CALID)->events;
+
+  // process event data to Event nodes
+  $service->libcalEventToNode($result);
 }
 
 /**
