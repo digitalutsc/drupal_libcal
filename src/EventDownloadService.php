@@ -54,10 +54,8 @@ class EventDownloadService implements EventDownloadServiceInterface
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_AUTOREFERER => true,
       ];
-      //print_log($defaultOptions);
       curl_setopt_array($curl, $defaultOptions);
       $response = curl_exec($curl);
-      //print_log($response);
       return json_decode($response);
     } catch (RequestException $e) {
       print_log($e->getMessage());
@@ -106,13 +104,10 @@ class EventDownloadService implements EventDownloadServiceInterface
           'field_libcal_id' => $event->id, // need to make sure it's unique
           'field_featured_image' => $event->featured_image,
           'field_libcal_url' => $event->url->public,
-
           'field_all_day' => $event->allday,
           'field_calendar_id' => $event->calendar->id,
-
           'field_campus' => (!isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "",
           'field_geolocation' => !empty($event->geolocation) ? $event->geolocation : "",
-
           //'field_future_dates' => $event->future_dates,
           //'field_libcal_categories' => $event->category,
           'field_libcal_color' => $event->color,
@@ -123,7 +118,6 @@ class EventDownloadService implements EventDownloadServiceInterface
           'field_seats_taken' => $event->seats_taken,
           'field_wait_list' => $event->wait_list
         ];
-        //print_log($params);
         $node = Node::create($params);
         $node->save();
       } else {
@@ -146,8 +140,8 @@ class EventDownloadService implements EventDownloadServiceInterface
         $eventNode->set('field_all_day', $event->allday);
         $eventNode->set('field_calendar_id', $event->calendar->id);
         $eventNode->set('field_campus', (!isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "");
-        //$eventNode->set('field_future_dates', $event->future_dates);
         $eventNode->set('field_geolocation', $event->geolocation);
+        //$eventNode->set('field_future_dates', $event->future_dates);
         //$eventNode->set('field_libcal_categories', $event->category);
         $eventNode->set('field_libcal_color', $event->color);
         $eventNode->set('field_location', $event->location->name);
