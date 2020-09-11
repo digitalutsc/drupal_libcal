@@ -70,8 +70,8 @@ class EventDownloadService implements EventDownloadServiceInterface
     foreach ($events as $event) {
       $query = \Drupal::entityQuery('node');
       $query->condition('status', 1);
-      $query->condition('type', "blog");
-      $query->condition('field_libcal_eventid', $event->id);
+      $query->condition('type', "event");
+      $query->condition('field_libcal_id', $event->id);
       $nids = $query->execute();
 
       $startdate = explode("-", $event->start);
@@ -82,36 +82,46 @@ class EventDownloadService implements EventDownloadServiceInterface
       array_pop($enddate);
       $enddate = implode("-", $enddate);
 
-      $eventLink =  [
-        'uri' => $event->url->public,
-        'title' => 'event public link',
-        'options' => ['attributes' => [
-          'target' => '_blank'
-        ]]
-      ];
-
       if (count($nids) <= 0) {
         // create new event node
         $params = [
           // The node entity bundle.
-          'type' => 'blog',
+          'type' => 'event',
           'langcode' => 'en',
           'created' => time(),
           'changed' => time(),
           // The user ID.
           'uid' => 1,
           'moderation_state' => 'published',
+
+          // libcal fields
           'title' => $event->title,
           'body' => [
             'summary' => substr(strip_tags($event->description), 0, 100),
             'value' => $event->description,
             'format' => 'full_html'
           ],
-          'field_event_date' => $startdate,
-          'field_event_end_date' => $enddate,
-          'field_libcal_eventid' => $event->id, // need to make sure it's unique
-          'field_libcal_feature_image' => $event->featured_image,
-          'field_registration_link' =>$eventLink
+          'field_start_date' => $startdate,
+          'field_end_date' => $enddate,
+          'field_libcal_id' => $event->id, // need to make sure it's unique
+          'field_featured_image' => $event->featured_image,
+          'field_libcal_url' => $event->url->public,
+
+          'field_all_day' => $event->allday,
+          'field_calendar_id' => $event->calendar->id,
+
+          'field_campus' => (!isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "",
+          'field_geolocation' => !empty($event->geolocation) ? $event->geolocation : "",
+
+          //'field_future_dates' => $event->future_dates,
+          //'field_libcal_categories' => $event->category,
+          'field_libcal_color' => $event->color,
+          'field_location' => $event->location->name,
+          'field_presenter' => $event->presenter,
+          'field_registration' => $event->registration,
+          'field_seats' => $event->seats,
+          'field_seats_taken' => $event->seats_taken,
+          'field_wait_list' => $event->wait_list
         ];
         //print_log($params);
         $node = Node::create($params);
@@ -127,11 +137,25 @@ class EventDownloadService implements EventDownloadServiceInterface
           'value' => $event->description,
           'format' => 'full_html'
         ]);
-        $eventNode->set('field_event_date', $startdate);
-        $eventNode->set('field_event_end_date', $enddate);
-        $eventNode->set('field_libcal_eventid', $event->id); // need to make sure it's unique
-        $eventNode->set('field_libcal_feature_image', $event->featured_image);
-        $eventNode->set('field_registration_link',$eventLink);
+        $eventNode->set('field_start_date', $startdate);
+        $eventNode->set('field_end_date', $enddate);
+        $eventNode->set('field_libcal_id', $event->id); // need to make sure it's unique
+        $eventNode->set('field_featured_image', $event->featured_image);
+        $eventNode->set('field_libcal_url', $event->url->public);
+
+        $eventNode->set('field_all_day', $event->allday);
+        $eventNode->set('field_calendar_id', $event->calendar->id);
+        $eventNode->set('field_campus', (!isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "");
+        //$eventNode->set('field_future_dates', $event->future_dates);
+        $eventNode->set('field_geolocation', $event->geolocation);
+        //$eventNode->set('field_libcal_categories', $event->category);
+        $eventNode->set('field_libcal_color', $event->color);
+        $eventNode->set('field_location', $event->location->name);
+        $eventNode->set('field_presenter', $event->presenter);
+        $eventNode->set('field_registration', $event->registration);
+        $eventNode->set('field_seats', $event->seats);
+        $eventNode->set('field_seats_taken', $event->seats_taken);
+        $eventNode->set('field_wait_list', $event->wait_list);
         $eventNode->save();
       }
 

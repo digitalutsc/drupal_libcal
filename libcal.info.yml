@@ -2,4 +2,6 @@ name: 'LibCal Integration'
 type: module
 description: 'This module is integrate Libcal API and feed to drupal'
 core_version_requirement: '^8.8 || ^9'
-package: 'DSU'
+package: DSU
+dependencies:
+  - menu_ui

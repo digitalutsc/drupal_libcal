@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_wait_list
+    - node.type.event
+id: node.event.field_wait_list
+field_name: field_wait_list
+entity_type: node
+bundle: event
+label: 'Wait List'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

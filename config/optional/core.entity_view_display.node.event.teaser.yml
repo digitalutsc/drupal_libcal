@@ -1,0 +1,65 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.event.body
+    - field.field.node.event.field_all_day
+    - field.field.node.event.field_calendar_id
+    - field.field.node.event.field_campus
+    - field.field.node.event.field_end_date
+    - field.field.node.event.field_featured_image
+    - field.field.node.event.field_future_dates
+    - field.field.node.event.field_geolocation
+    - field.field.node.event.field_libcal_categories
+    - field.field.node.event.field_libcal_color
+    - field.field.node.event.field_libcal_id
+    - field.field.node.event.field_libcal_url
+    - field.field.node.event.field_location
+    - field.field.node.event.field_presenter
+    - field.field.node.event.field_registration
+    - field.field.node.event.field_seats
+    - field.field.node.event.field_seats_taken
+    - field.field.node.event.field_start_date
+    - field.field.node.event.field_wait_list
+    - node.type.event
+  module:
+    - text
+    - user
+id: node.event.teaser
+targetEntityType: node
+bundle: event
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_all_day: true
+  field_calendar_id: true
+  field_campus: true
+  field_end_date: true
+  field_featured_image: true
+  field_future_dates: true
+  field_geolocation: true
+  field_libcal_categories: true
+  field_libcal_color: true
+  field_libcal_id: true
+  field_libcal_url: true
+  field_location: true
+  field_presenter: true
+  field_registration: true
+  field_seats: true
+  field_seats_taken: true
+  field_start_date: true
+  field_wait_list: true
