@@ -139,34 +139,37 @@ class EventDownloadService implements EventDownloadServiceInterface
             } else {
                 // update existing Event node
                 $eventNode = Node::load(array_keys($nids)[0]);
-                $eventNode->set('changed', time());
-                // The user ID.
-                $eventNode->set('title', $event->title);
-                $eventNode->set('body', [
-                    'summary' => substr(strip_tags($event->description), 0, 100),
-                    'value' => $event->description,
-                    'format' => 'full_html'
-                ]);
-                $eventNode->set('field_start_date', $startdate);
-                $eventNode->set('field_end_date', $enddate);
-                $eventNode->set('field_libcal_id', $event->id); // need to make sure it's unique
-                $eventNode->set('field_featured_image', $event->featured_image);
-                $eventNode->set('field_libcal_url', $event->url->public);
+                if (isset($eventNode)) {
+                    $eventNode->set('changed', time());
+                    // The user ID.
+                    $eventNode->set('title', $event->title);
+                    $eventNode->set('body', [
+                        'summary' => substr(strip_tags($event->description), 0, 100),
+                        'value' => $event->description,
+                        'format' => 'full_html'
+                    ]);
+                    $eventNode->set('field_start_date', $startdate);
+                    $eventNode->set('field_end_date', $enddate);
+                    $eventNode->set('field_libcal_id', $event->id); // need to make sure it's unique
+                    $eventNode->set('field_featured_image', $event->featured_image);
+                    $eventNode->set('field_libcal_url', $event->url->public);
 
-                $eventNode->set('field_all_day', $event->allday);
-                $eventNode->set('field_calendar_id', $event->calendar->id);
-                $eventNode->set('field_campus', (!isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "");
-                $eventNode->set('field_geolocation', $event->geolocation);
-                //$eventNode->set('field_future_dates', $event->future_dates);
-                //$eventNode->set('field_libcal_categories', $event->category);
-                $eventNode->set('field_libcal_color', $event->color);
-                $eventNode->set('field_location', $event->location->name);
-                $eventNode->set('field_presenter', $event->presenter);
-                $eventNode->set('field_registration', $event->registration);
-                $eventNode->set('field_seats', $event->seats);
-                $eventNode->set('field_seats_taken', $event->seats_taken);
-                $eventNode->set('field_wait_list', $event->wait_list);
-                $eventNode->save();
+                    $eventNode->set('field_all_day', $event->allday);
+                    $eventNode->set('field_calendar_id', $event->calendar->id);
+                    $eventNode->set('field_campus', (!isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "");
+                    $eventNode->set('field_geolocation', $event->geolocation);
+                    //$eventNode->set('field_future_dates', $event->future_dates);
+                    //$eventNode->set('field_libcal_categories', $event->category);
+                    $eventNode->set('field_libcal_color', $event->color);
+                    $eventNode->set('field_location', $event->location->name);
+                    $eventNode->set('field_presenter', $event->presenter);
+                    $eventNode->set('field_registration', $event->registration);
+                    $eventNode->set('field_seats', $event->seats);
+                    $eventNode->set('field_seats_taken', $event->seats_taken);
+                    $eventNode->set('field_wait_list', $event->wait_list);
+                    $eventNode->save();
+                }
+
             }
 
         }
