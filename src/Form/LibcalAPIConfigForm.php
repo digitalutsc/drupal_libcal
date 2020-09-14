@@ -196,7 +196,8 @@ class LibcalAPIConfigForm extends ConfigFormBase
      */
     public function submitFormManuallyDownloadEvents(array &$form, FormStateInterface $form_state) {
         $service = \Drupal::service('libcal.download');
-        $result = $service->get("events?cal_id=". LIBCAL_UTSC_CALID)->events;
+        //$result = $service->get("events?cal_id=". LIBCAL_UTSC_CALID)->events;
+        $result = $service->get("events?cal_id=7288")->events;
 
         // process event data to Event nodes
         $service->libcalEventToNode($result);

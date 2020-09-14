@@ -12,45 +12,99 @@ define("LIBCAL_UTSC_CALID", 2021);
 /**
  * Implements hook_help().
  */
-function libcal_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the libcal module.
-    case 'help.page.libcal':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('This module is integrate Libcal API and feed to drupal') . '</p>';
-      return $output;
+function libcal_help($route_name, RouteMatchInterface $route_match)
+{
+    switch ($route_name) {
+        // Main module help for the libcal module.
+        case 'help.page.libcal':
+            $output = '';
+            $output .= '<h3>' . t('About') . '</h3>';
+            $output .= '<p>' . t('This module is integrate Libcal API and feed to drupal') . '</p>';
+            return $output;
 
-    default:
-  }
+        default:
+    }
 }
 
 /**
  * Implements hook_theme().
  */
-function libcal_theme() {
-  return [
-    'libcal' => [
-      'render element' => 'children',
-    ],
-  ];
+function libcal_theme()
+{
+    return [
+        'libcal' => [
+            'render element' => 'children',
+        ],
+    ];
 }
 
-function libcal_cron() {
-  print_log("execute download data from LibCal automatically");
-  // setup cron job:
-  // crontab -e
-  // add   0 8 * * * curl http://d9.dsu-pp.server.utsc.utoronto.ca/cron/ax9hjCCI4_fIw5WkG7RSJ0bykbMiqjHdKP_SFpvjm7L0tAF6pJW3acLoSameWkKfNl7Ehf1btg at 8 a.m daily
-  // add   0 * * * * curl {{ cron URL }} at every 1 hour
-  // add   0 0 * * 0 curl {{ cron URL }} at every week
-  // add   0 0 1 * * curl {{ cron URL }} at every month
+function libcal_cron()
+{
+    print_log("execute download data from LibCal automatically");
+    // setup cron job:
+    // crontab -e
+    // add   0 8 * * * curl http://d9.dsu-pp.server.utsc.utoronto.ca/cron/ax9hjCCI4_fIw5WkG7RSJ0bykbMiqjHdKP_SFpvjm7L0tAF6pJW3acLoSameWkKfNl7Ehf1btg at 8 a.m daily
+    // add   0 * * * * curl {{ cron URL }} at every 1 hour
+    // add   0 0 * * 0 curl {{ cron URL }} at every week
+    // add   0 0 1 * * curl {{ cron URL }} at every month
 
-  $service = \Drupal::service('libcal.download');
-  //$result = $service->get("events?cal_id=7288")->events;
-  $result = $service->get("events?cal_id=". LIBCAL_UTSC_CALID)->events;
+    $service = \Drupal::service('libcal.download');
+    //$result = $service->get("events?cal_id=7288")->events;
+    $result = $service->get("events?cal_id=" . LIBCAL_UTSC_CALID)->events;
 
-  // process event data to Event nodes
-  $service->libcalEventToNode($result);
+    // process event data to Event nodes
+    $service->libcalEventToNode($result);
+}
+
+
+/**
+ * Replace space with special charcater
+ * @param $str
+ * @param string $delimiter
+ * @return string
+ */
+function createSlug($str, $delimiter = '-')
+{
+    $slug = strtolower(trim(preg_replace('/[\s-]+/', $delimiter, preg_replace('/[^A-Za-z0-9-]+/', $delimiter, preg_replace('/[&]/', 'and', preg_replace('/[\']/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $str))))), $delimiter));
+    return $slug;
+}
+
+/**
+ * Generate Path Alias for Event node only
+ * @param $node
+ */
+function generateEventAlias($node)
+{
+    $tag = "/events/" . createSlug($node->title->value);
+    if (!\Drupal::service('path_alias.repository')->lookupByAlias($tag, 'en')) {
+        //$path = \Drupal::service('path_alias.repository')->save("/node/" . $node->id(), $tag, "en");
+        $path_alias = \Drupal::entityTypeManager()->getStorage('path_alias')->create([
+            'path' => "/node/" . $node->id(),
+            'alias' => $tag,
+            'langcode' => "en",
+        ]);
+        $path_alias->save();
+
+    }
+}
+
+/**
+ * Implements hook_insert().
+ */
+function libcal_entity_insert(\Drupal\Core\Entity\EntityInterface $node)
+{
+    // Set the URL alias
+    //if (get_class($node) == 'Drupal\node\Entity\Node') {
+    if ($node->getEntityType()->id() == 'node' && in_array($node->getType(), ['event'])) {
+        generateEventAlias($node);
+    }
+}
+function libcal_entity_update(\Drupal\Core\Entity\EntityInterface $node) {
+    // Set the URL alias
+    //if (get_class($node) == 'Drupal\node\Entity\Node') {
+    if ($node->getEntityType()->id() == 'node' && in_array($node->getType(), ['event'])) {
+        generateEventAlias($node);
+    }
 }
 
 /**
@@ -60,7 +114,7 @@ function libcal_cron() {
  */
 function print_log($thing)
 {
-  error_log(print_r($thing, true), 0);
+    error_log(print_r($thing, true), 0);
 }
 
 /**
@@ -69,7 +123,7 @@ function print_log($thing)
  */
 function logging($thing)
 {
-  echo "<pre>";
-  print_r($thing);
-  echo "</pre>";
+    echo "<pre>";
+    print_r($thing);
+    echo "</pre>";
 }
