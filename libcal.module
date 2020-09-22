@@ -99,7 +99,9 @@ function libcal_entity_insert(\Drupal\Core\Entity\EntityInterface $node)
         generateEventAlias($node);
     }
 }
-function libcal_entity_update(\Drupal\Core\Entity\EntityInterface $node) {
+
+function libcal_entity_update(\Drupal\Core\Entity\EntityInterface $node)
+{
     // Set the URL alias
     //if (get_class($node) == 'Drupal\node\Entity\Node') {
     if ($node->getEntityType()->id() == 'node' && in_array($node->getType(), ['event'])) {
@@ -112,18 +114,22 @@ function libcal_entity_update(\Drupal\Core\Entity\EntityInterface $node) {
  *
  * @param $thing
  */
-function print_log($thing)
-{
-    error_log(print_r($thing, true), 0);
-}
+if (!function_exists('logging')) {
+    function print_log($thing)
+    {
+        error_log(print_r($thing, true), 0);
+    }
 
+}
 /**
  * Debug function: display any variable to current webpage
  * @param $thing
  */
-function logging($thing)
-{
-    echo "<pre>";
-    print_r($thing);
-    echo "</pre>";
+if (!function_exists('logging')) {
+    function logging($thing)
+    {
+        echo "<pre>";
+        print_r($thing);
+        echo "</pre>";
+    }
 }
