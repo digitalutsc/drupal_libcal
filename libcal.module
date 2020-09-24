@@ -8,6 +8,7 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 
 define("LIBCAL_UTSC_CALID", 2021);
+define("LIBCAL_DSU_SEARCH", "event_search?search=*&tag=262&limit=100");
 
 /**
  * Implements hook_help().
@@ -50,8 +51,9 @@ function libcal_cron()
 
     $service = \Drupal::service('libcal.download');
     //$result = $service->get("events?cal_id=7288")->events;
-    $result = $service->get("events?cal_id=" . LIBCAL_UTSC_CALID)->events;
-
+    //$result = $service->get("events?cal_id=" . LIBCAL_UTSC_CALID)->events;
+    //$result = $service->get('event_search?search=*&tag=262&limit=100')->events;
+    $result = $service->get(LIBCAL_DSU_SEARCH)->events;
     // process event data to Event nodes
     $service->libcalEventToNode($result);
 }

@@ -153,8 +153,9 @@ class LibcalAPIConfigForm extends ConfigFormBase
         );
         $form['test-api-getEvent']['container']['cal_id'] = array(
             '#type' => 'textfield',
-            '#title' => "Calendar ID:",
-            '#default_value' => \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('testing-calid')
+            '#title' => "Search Params:",
+            '#default_value' => (!empty(\Drupal::service('tempstore.private')->get('libcal.api.testing')->get('testing-calid'))) ? \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('testing-calid') : LIBCAL_DSU_SEARCH,
+            '#description' => "Default: ". LIBCAL_DSU_SEARCH
         );
         $form['test-api-getEvent']['container']['submit-get-events'] = array(
             '#type' => 'submit',
@@ -196,7 +197,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
      */
     public function submitFormManuallyDownloadEvents(array &$form, FormStateInterface $form_state) {
         $service = \Drupal::service('libcal.download');
-        $result = $service->get("events?cal_id=". LIBCAL_UTSC_CALID)->events;
+        $result = $service->get(LIBCAL_DSU_SEARCH)->events;
         //$result = $service->get("events?cal_id=2020")->events;
 
         // process event data to Event nodes
@@ -243,8 +244,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
     {
 
         $service = \Drupal::service('libcal.download');
-        $result = $service->get("events?cal_id=" . $form_state->getValues()['cal_id'])->events;
-
+        $result = $service->get($form_state->getValues()['cal_id'])->events;
         $tempstore = \Drupal::service('tempstore.private')->get('libcal.api.testing');
         $tempstore->set('output_events', print_r($result, true));
         $tempstore->set('testing-calid', $form_state->getValues()['cal_id']);
