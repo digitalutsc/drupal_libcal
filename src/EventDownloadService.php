@@ -102,13 +102,14 @@ class EventDownloadService implements EventDownloadServiceInterface
     /**
      * @param $future_dates
      */
-    public function libcalFutureEventToNode($future_dates) {
+    public function libcalFutureEventToNode($future_dates)
+    {
         // download future events
         foreach ($future_dates as $fd) {
             $fnids = $this->queryEventNode($fd->event_id);
             if (count($fnids) <= 0) {
                 $service = \Drupal::service('libcal.download');
-                $futureEvents = $service->get("events/". $fd->event_id)->events;
+                $futureEvents = $service->get("events/" . $fd->event_id)->events;
                 $this->libcalEventToNode($futureEvents);
             }
         }
@@ -118,13 +119,27 @@ class EventDownloadService implements EventDownloadServiceInterface
      * @param $event_id
      * @return mixed
      */
-    public function queryEventNode($event_id) {
+    public function queryEventNode($event_id)
+    {
         $query = \Drupal::entityQuery('node');
         $query->condition('status', 1);
         $query->condition('type', "event");
         $query->condition('field_libcal_id', $event_id);
         return $query->execute();
 
+    }
+
+    public function updatePastFieldEventNode($flag)
+    {
+        $query = \Drupal::entityQuery('node');
+        $query->condition('type', "event");
+        $query->condition('field_past_event', false);
+        $nids  = $query->execute();
+        foreach ($nids as $nid) {
+            $eventnode = \Drupal\node\Entity\Node::load($nid);
+            $eventnode->set('field_past_event', $flag);
+            $eventnode->save();
+        }
     }
 
     /**
@@ -174,7 +189,8 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_registration' => $event->registration,
             'field_seats' => $event->seats,
             'field_seats_taken' => $event->seats_taken,
-            'field_wait_list' => $event->wait_list
+            'field_wait_list' => $event->wait_list,
+            'field_past_event' => 0
         ];
         $node = Node::create($params);
         $node->save();
@@ -195,7 +211,7 @@ class EventDownloadService implements EventDownloadServiceInterface
         $enddate = implode("-", $enddate);
 
         // update existing Event node
-        $eventNode = Node::load(array_keys($nids)[0]);
+        $eventNode = Node::load(array_values($nids)[0]);
         if (isset($eventNode)) {
             $eventNode->set('changed', time());
             // The user ID.
@@ -224,6 +240,9 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_seats', $event->seats);
             $eventNode->set('field_seats_taken', $event->seats_taken);
             $eventNode->set('field_wait_list', $event->wait_list);
+            $eventNode->set('field_past_event', 0);
+            print_log("Update field here" .  array_values($nids)[0]);
+            print_log($eventNode->get("field_past_event")->getValue());
             $eventNode->save();
         }
     }
