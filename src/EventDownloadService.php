@@ -179,6 +179,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_libcal_url' => $event->url->public,
             'field_all_day' => $event->allday,
             'field_calendar_id' => $event->calendar->id,
+            'field_calendar_name' => $event->calendar->name,
             'field_campus' => (!isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "",
             'field_geolocation' => !empty($event->geolocation) ? $event->geolocation : "",
             //'field_future_dates' => $event->future_dates,
@@ -229,6 +230,7 @@ class EventDownloadService implements EventDownloadServiceInterface
 
             $eventNode->set('field_all_day', $event->allday);
             $eventNode->set('field_calendar_id', $event->calendar->id);
+            $eventNode->set('field_calendar_name', $event->calendar->name);
             $eventNode->set('field_campus', (!isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "");
             $eventNode->set('field_geolocation', $event->geolocation);
             //$eventNode->set('field_future_dates', $event->future_dates);
