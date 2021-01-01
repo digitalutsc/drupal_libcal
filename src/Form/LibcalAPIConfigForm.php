@@ -76,7 +76,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
       '#title' => $this
         ->t('Calendar ID(s):'),
       '#required' => TRUE,
-      '#description' => $this->t('For multiple calendar IDs, please use "," to seperate them'),
+      '#description' => $this->t('<p>To ignore, please enter -1. <br />For multiple calendar IDs, please use "," to seperate them</p>'),
       '#default_value' => ($config->get("calendar-id") !== null) ? $config->get("calendar-id") : ""
     );
 
@@ -84,7 +84,8 @@ class LibcalAPIConfigForm extends ConfigFormBase
       '#type' => 'textfield',
       '#title' => $this
         ->t('Tag ID(s):'),
-      '#description' => $this->t('For multiple calendar tags, please use "," to seperate them'),
+      '#required' => TRUE,
+      '#description' => $this->t('<p>To ignore, please enter -1. <br />For multiple calendar tag IDs, please use "," to seperate them</p>'),
       '#default_value' => ($config->get("tags") !== null) ? $config->get("tags") : ""
     );
 
@@ -102,7 +103,7 @@ class LibcalAPIConfigForm extends ConfigFormBase
       '#attributes' => ['class' => ['layout-column layout-column--half'], 'style' => "left: 10px !important"],
     );
     $form['container']['manually']['description'] = array(
-      '#markup' => $this->t('<p>Currently set download events from LibCal (UTSC Calendar Only) automatically in cron job at 8a.m daily. If there are updated events which need to be downloaded immediately, please click the below button, it will do exactly same job.</p>')
+      '#markup' => $this->t('<p>Download Events process will be run when the <a href="admin/config/system/cron">scheduled cron</a> run. However, it can be run immediately by clicking the Download button below.</p>')
     );
 
     $form['container']['manually']['submit-manually-download-events'] = array(
@@ -111,96 +112,6 @@ class LibcalAPIConfigForm extends ConfigFormBase
       '#value' => "Download",
       '#attributes' => ['class' => ["button button--primary"]],
       '#submit' => array([$this, 'submitFormManuallyDownloadEvents'])
-    );
-
-    $form['testing-api'] = array(
-      '#markup' => $this->t('<hr/><p><h2>Testing API</h2></p>')
-    );
-    $form['reset'] = array(
-      '#type' => 'submit',
-      '#name' => "submit-reset",
-      '#value' => "Reset",
-      '#submit' => array([$this, 'submitFormReset'])
-    );
-    $form['test-api-accesstoken'] = array(
-      '#type' => 'fieldset',
-      '#title' => 'Test Access Token',
-      '#prefix' => '<div class="clearfix">',
-      '#suffix' => '</div>'
-    );
-    $form['test-api-accesstoken']['operations'] = array(
-      '#type' => 'container',
-    );
-    $form['test-api-accesstoken']['container']['submit-access-token'] = array(
-      '#type' => 'submit',
-      '#name' => "submit-access-token",
-      '#value' => "Send Request",
-      '#submit' => array([$this, 'submitFormAccessToken'])
-    );
-    $form['test-api-accesstoken']['results'] = array(
-      '#type' => 'container',
-    );
-    $form['test-api-accesstoken']['results']['output'] = array(
-      '#type' => 'textarea',
-      '#title' => 'Result: ',
-      '#default_value' => \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('output_accesstoken')
-    );
-
-    $form['test-api-getCalendar'] = array(
-      '#type' => 'fieldset',
-      '#title' => 'Test Get Calendars',
-      '#prefix' => '<div class="clearfix">',
-      '#suffix' => '</div>'
-    );
-    $form['test-api-getCalendar']['operations'] = array(
-      '#type' => 'container',
-    );
-
-    $form['test-api-getCalendar']['container']['submit-get-calendar'] = array(
-      '#type' => 'submit',
-      '#name' => "submit-test-get-calendar",
-      '#value' => "Send Request",
-      '#submit' => array([$this, 'submitFormCalendars'])
-    );
-    $form['test-api-getCalendar']['results'] = array(
-      '#type' => 'container',
-    );
-
-    $form['test-api-getCalendar']['results']['output'] = array(
-      '#type' => 'textarea',
-      '#title' => 'Result: ',
-      '#default_value' => \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('output_calendar')
-    );
-
-    $form['test-api-getEvent'] = array(
-      '#type' => 'fieldset',
-      '#title' => 'Test - Manually Download Events from LibCal',
-      '#prefix' => '<div class="clearfix">',
-      '#suffix' => '</div>'
-    );
-    $form['test-api-getEvent']['operations'] = array(
-      '#type' => 'container',
-    );
-    $form['test-api-getEvent']['container']['cal_id'] = array(
-      '#type' => 'textfield',
-      '#title' => "Search Params:",
-      '#default_value' => (!empty(\Drupal::service('tempstore.private')->get('libcal.api.testing')->get('testing-calid'))) ? \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('testing-calid') : LIBCAL_DSU_SEARCH,
-      '#description' => "Default: " . LIBCAL_DSU_SEARCH
-    );
-    $form['test-api-getEvent']['container']['submit-get-events'] = array(
-      '#type' => 'submit',
-      '#name' => "submit-test-get-events",
-      '#value' => "Send Request",
-      '#submit' => array([$this, 'submitFormEvent'])
-    );
-
-    $form['test-api-getEvent']['results'] = array(
-      '#type' => 'container',
-    );
-    $form['test-api-getEvent']['results']['output'] = array(
-      '#type' => 'textarea',
-      '#title' => 'Result: ',
-      '#default_value' => \Drupal::service('tempstore.private')->get('libcal.api.testing')->get('output_events')
     );
 
     return $form;

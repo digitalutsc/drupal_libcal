@@ -56,7 +56,7 @@ function startDownloadLibCalEvents() {
   $service->updatePastFieldEventNode(true);
 
   // Download events regards to the calenedar id(s)
-  if (!empty($config->get('calendar-id'))) {
+  if (!empty($config->get('calendar-id')) || $config->get('tags') != -1 ) {
     $ids = $config->get('calendar-id');
     if(strpos($ids, ',') !== false ) {
       $calendar_ids = explode(',', $ids);
@@ -71,7 +71,7 @@ function startDownloadLibCalEvents() {
   }
 
   // Download events regards to tag id(s)
-  if (!empty($config->get('tags'))) {
+  if (!empty($config->get('tags'))  || $config->get('tags') != -1 ) {
     $tags = $config->get('tags');
     if(strpos($tags, ',') !== false ) {
       $tag_ids = explode(',', $tags);
