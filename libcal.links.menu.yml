@@ -1,6 +1,6 @@
 libcal.libcal_api_config_form:
-  title: 'LibCal API Configuration'
+  title: 'LibCal'
   route_name: libcal.libcal_api_config_form
-  description: 'Configure LibCal API Integration '
+  description: 'Configure LibCal Integration in Drupal.'
   parent: system.admin_config_system
   weight: 99

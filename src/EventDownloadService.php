@@ -25,7 +25,7 @@ class EventDownloadService implements EventDownloadServiceInterface
         $config = \Drupal::config('libcal.libcalapiconfig');
 
         try {
-            $response = \Drupal::httpClient()->post("https://libcal.library.utoronto.ca/1.1/oauth/token", [
+            $response = \Drupal::httpClient()->post($config->get('host')."/1.1/oauth/token", [
                 'json' => [
                     'client_id' => $config->get("client_id"),
                     'client_secret' => $config->get("client_secret"),
@@ -41,6 +41,7 @@ class EventDownloadService implements EventDownloadServiceInterface
 
     public function get($params)
     {
+        $config = \Drupal::config('libcal.libcalapiconfig');
         if (empty($params)) {
             throw new \Exception("keyword must be valid");
         }
@@ -51,7 +52,8 @@ class EventDownloadService implements EventDownloadServiceInterface
             'Accept' => 'application/json',
         ];
         try {
-            $response = $client->get("https://libcal.library.utoronto.ca/1.1/$params", [
+            $host = $config->get('host');
+            $response = $client->get($host."/1.1/$params", [
                 'headers' => $headers
             ]);
             return json_decode((string)$response->getBody());
@@ -59,24 +61,6 @@ class EventDownloadService implements EventDownloadServiceInterface
             print_log($e->getMessage());
             return null;
         }
-
-        /*try {
-          $curl = curl_init();
-          $defaultOptions = [
-            CURLOPT_URL => "https://libcal.library.utoronto.ca/1.1/$params",
-            CURLOPT_HTTPHEADER => array('Content-Type: application/json', "Authorization: Bearer " . $access_token),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_AUTOREFERER => true,
-          ];
-          curl_setopt_array($curl, $defaultOptions);
-          $response = curl_exec($curl);
-          return json_decode($response);
-        } catch (RequestException $e) {
-          print_log($e->getMessage());
-          return null;
-        }*/
-
     }
 
     /**
@@ -243,8 +227,6 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_seats_taken', $event->seats_taken);
             $eventNode->set('field_wait_list', $event->wait_list);
             $eventNode->set('field_past_event', 0);
-            print_log("Update field here" .  array_values($nids)[0]);
-            print_log($eventNode->get("field_past_event")->getValue());
             $eventNode->save();
         }
     }

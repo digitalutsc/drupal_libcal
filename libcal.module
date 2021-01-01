@@ -7,9 +7,6 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 
-define("LIBCAL_UTSC_CALID", 2021);
-define("LIBCAL_DSU_SEARCH", "event_search?search=*&tag=262&limit=100");
-
 /**
  * Implements hook_help().
  */
@@ -39,25 +36,56 @@ function libcal_theme()
     ];
 }
 
+/**
+ *  Implement hook_cron
+ */
 function libcal_cron()
 {
-    // setup cron job:
-    // crontab -e
-    // add   0 8 * * * curl http://d9.dsu-pp.server.utsc.utoronto.ca/cron/ax9hjCCI4_fIw5WkG7RSJ0bykbMiqjHdKP_SFpvjm7L0tAF6pJW3acLoSameWkKfNl7Ehf1btg at 8 a.m daily
-    // add   0 * * * * curl {{ cron URL }} at every 1 hour
-    // add   0 0 * * 0 curl {{ cron URL }} at every week
-    // add   0 0 1 * * curl {{ cron URL }} at every month
+   startDownloadLibCalEvents();
 
-    $service = \Drupal::service('libcal.download');
-
-    // set all event exist to pasted then turn on any event downlaodeable from Libcal will be turn off
-    $service->updatePastFieldEventNode(true);
-
-    $result = $service->get(LIBCAL_DSU_SEARCH)->events;
-    // process event data to Event nodes
-    $service->libcalEventToNode($result);
 }
 
+/**
+ * Trigger download Events process
+ */
+function startDownloadLibCalEvents() {
+  $config = \Drupal::config('libcal.libcalapiconfig');
+  $service = \Drupal::service('libcal.download');
+
+  // set all event exist to pasted then turn on any event downlaodeable from Libcal will be turn off
+  $service->updatePastFieldEventNode(true);
+
+  // Download events regards to the calenedar id(s)
+  if (!empty($config->get('calendar-id'))) {
+    $ids = $config->get('calendar-id');
+    if(strpos($ids, ',') !== false ) {
+      $calendar_ids = explode(',', $ids);
+      foreach ($calendar_ids as $cid) {
+        $result = $service->get("events?cal_id=". $cid)->events;
+        $service->libcalEventToNode($result);
+      }
+    }else {
+      $result = $service->get("events?cal_id=". $ids)->events;
+      $service->libcalEventToNode($result);
+    }
+  }
+
+  // Download events regards to tag id(s)
+  if (!empty($config->get('tags'))) {
+    $tags = $config->get('tags');
+    if(strpos($tags, ',') !== false ) {
+      $tag_ids = explode(',', $tags);
+      foreach ($tag_ids as $tid) {
+        $result =  $service->get("event_search?search=*&tag=$tid&limit=100")->events;
+        $service->libcalEventToNode($result);
+      }
+    }else {
+      $result =$service->get("event_search?search=*&tag=$tags&limit=100")->events;
+      $service->libcalEventToNode($result);
+    }
+  }
+
+}
 
 /**
  * Replace space with special charcater

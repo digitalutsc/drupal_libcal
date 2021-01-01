@@ -2,7 +2,7 @@ libcal.libcal_api_config_form:
   path: '/admin/config/libcal/libcalapiconfig'
   defaults:
     _form: '\Drupal\libcal\Form\LibcalAPIConfigForm'
-    _title: 'LibCal API Configuration'
+    _title: 'LibCal Integration'
   requirements:
     _permission: 'access administration pages'
   options:
