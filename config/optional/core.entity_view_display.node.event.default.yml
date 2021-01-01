@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.event.body
     - field.field.node.event.field_all_day
     - field.field.node.event.field_calendar_id
+    - field.field.node.event.field_calendar_name
     - field.field.node.event.field_campus
     - field.field.node.event.field_end_date
     - field.field.node.event.field_featured_image
@@ -15,6 +16,7 @@ dependencies:
     - field.field.node.event.field_libcal_id
     - field.field.node.event.field_libcal_url
     - field.field.node.event.field_location
+    - field.field.node.event.field_past_event
     - field.field.node.event.field_presenter
     - field.field.node.event.field_registration
     - field.field.node.event.field_seats
@@ -55,6 +57,14 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     type: number_integer
+    region: content
+  field_calendar_name:
+    weight: 121
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_campus:
     weight: 108
@@ -136,6 +146,16 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_past_event:
+    weight: 120
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_presenter:
     weight: 110
     label: above
@@ -193,4 +213,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-hidden: {  }
+hidden:
+  langcode: true
+  search_api_excerpt: true

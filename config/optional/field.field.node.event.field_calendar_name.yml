@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_calendar_name
+    - node.type.event
+id: node.event.field_calendar_name
+field_name: field_calendar_name
+entity_type: node
+bundle: event
+label: 'Calendar Name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
