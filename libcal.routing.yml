@@ -1,5 +1,5 @@
 libcal.libcal_api_config_form:
-  path: '/admin/config/libcal/libcalapiconfig'
+  path: '/admin/config/libcal'
   defaults:
     _form: '\Drupal\libcal\Form\LibcalAPIConfigForm'
     _title: 'LibCal Integration'
