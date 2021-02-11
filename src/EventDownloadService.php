@@ -121,7 +121,16 @@ class EventDownloadService implements EventDownloadServiceInterface
         $nids  = $query->execute();
         foreach ($nids as $nid) {
             $eventnode = \Drupal\node\Entity\Node::load($nid);
-            $eventnode->set('field_past_event', $flag);
+            //$eventnode->set('field_past_event', $flag);
+
+            // check if current timestamp with event timestamp
+            if (time() > strtotime($eventnode->get("field_start_date"))) {
+              $eventnode->set('field_past_event', true);
+            }
+            else {
+              $eventnode->set('field_past_event', false);
+            }
+
             $eventnode->save();
         }
     }
@@ -226,14 +235,8 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_seats', $event->seats);
             $eventNode->set('field_seats_taken', $event->seats_taken);
             $eventNode->set('field_wait_list', $event->wait_list);
+            $eventNode->set('field_past_event', false);
 
-            // check if current timestamp with event timestamp
-            if (time() > strtotime($event->start)) {
-              $eventNode->set('field_past_event', true);
-            }
-            else {
-              $eventNode->set('field_past_event', false);
-            }
             $eventNode->save();
         }
     }
