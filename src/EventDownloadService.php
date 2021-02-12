@@ -124,7 +124,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             //$eventnode->set('field_past_event', $flag);
 
             // check if current timestamp with event timestamp
-            if (time() > strtotime($eventnode->get("field_start_date"))) {
+            if (time() > strtotime($eventnode->get("field_start_date")->getValue()[0]['value'])) {
               $eventnode->set('field_past_event', true);
             }
             else {
