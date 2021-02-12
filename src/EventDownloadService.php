@@ -117,14 +117,15 @@ class EventDownloadService implements EventDownloadServiceInterface
     {
         $query = \Drupal::entityQuery('node');
         $query->condition('type', "event");
-        $query->condition('field_past_event', false);
+        //$query->condition('field_past_event', false);
         $nids  = $query->execute();
         foreach ($nids as $nid) {
             $eventnode = \Drupal\node\Entity\Node::load($nid);
             //$eventnode->set('field_past_event', $flag);
 
             // check if current timestamp with event timestamp
-            if (time() > strtotime($eventnode->get("field_start_date")->getValue()[0]['value'])) {
+            //\Drupal::messenger()->addMessage($eventnode->id() . ") ". $eventnode->getTitle() . " " . time(). " " . $eventnode->get("field_start_date")->getValue()[0]['value']. " = " . (time() > strtotime($eventnode->get("field_start_date")->getValue()[0]['value'])) , "warning");
+	    if (time() > strtotime($eventnode->get("field_start_date")->getValue()[0]['value'])) {
               $eventnode->set('field_past_event', true);
             }
             else {
