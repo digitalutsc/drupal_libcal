@@ -163,7 +163,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             'title' => $event->title,
             'body' => [
                 'summary' => substr(strip_tags($event->description), 0, 100),
-                'value' => $event->description,
+                'value' => str_replace("<p>&nbsp;</p>", "", $event->description),
                 'format' => 'full_html'
             ],
             'field_start_date' => $startdate,
@@ -213,7 +213,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('title', $event->title);
             $eventNode->set('body', [
                 'summary' => substr(strip_tags($event->description), 0, 100),
-                'value' => $event->description,
+                'value' => str_replace("<p>&nbsp;</p>", "", $event->description),
                 'format' => 'full_html'
             ]);
             $eventNode->set('field_start_date', $startdate);
