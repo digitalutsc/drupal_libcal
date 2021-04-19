@@ -193,9 +193,10 @@ class EventDownloadService implements EventDownloadServiceInterface
         // trigger email sending action.
         $action = \Drupal::entityTypeManager()
           ->getStorage('action')
-          ->load('send_mail');
+          ->load('send_email');
+        
         if ($action) {
-          $action->execute($entity);
+          $action->execute([$node]);
         }
 
 
