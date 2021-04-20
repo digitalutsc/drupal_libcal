@@ -127,6 +127,15 @@ function libcal_entity_insert(\Drupal\Core\Entity\EntityInterface $node)
     //if (get_class($node) == 'Drupal\node\Entity\Node') {
     if ($node->getEntityType()->id() == 'node' && in_array($node->getType(), ['event'])) {
         generateEventAlias($node);
+
+        // trigger email sending action.
+        $action = \Drupal::entityTypeManager()
+          ->getStorage('action')
+          ->load('send_email');
+
+        if ($action) {
+          $action->execute([$node]);
+        }
     }
 }
 

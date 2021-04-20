@@ -190,16 +190,6 @@ class EventDownloadService implements EventDownloadServiceInterface
         $node = Node::create($params);
         $node->save();
 
-        // trigger email sending action.
-        /*$action = \Drupal::entityTypeManager()
-          ->getStorage('action')
-          ->load('send_email');
-
-        if ($action) {
-          $action->execute([$node]);
-        }*/
-
-
     }
 
     /**
