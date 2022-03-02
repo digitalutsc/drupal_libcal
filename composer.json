@@ -8,6 +8,6 @@
     "minimum-stability": "dev",
     "support": {
         "issues": "https://www.drupal.org/project/issues/libcal",
-        "source": "http://cgit.drupalcode.org/libcal",
-    },
+        "source": "http://cgit.drupalcode.org/libcal"
+    }
 }
