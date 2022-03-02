@@ -1,18 +1,20 @@
 langcode: en
 status: true
 dependencies:
-  config:
-    - field.storage.node.field_libcal_url
-    - node.type.event
-id: node.event.field_libcal_url
+  module:
+    - node
+id: node.field_libcal_url
 field_name: field_libcal_url
 entity_type: node
-bundle: event
-label: 'LibCal URL'
-description: ''
-required: false
-translatable: false
-default_value: {  }
-default_value_callback: ''
-settings: {  }
-field_type: string
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
