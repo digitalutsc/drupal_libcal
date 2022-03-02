@@ -169,7 +169,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_start_date' => $startdate,
             'field_end_date' => $enddate,
             'field_libcal_id' => $event->id, // need to make sure it's unique
-            'field_featured_image' => $event->featured_image,
+            'field_libcal_featured_image' => $event->featured_image,
             'field_libcal_url' => $event->url->public,
             'field_all_day' => $event->allday,
             'field_calendar_id' => $event->calendar->id,
