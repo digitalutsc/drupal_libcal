@@ -1,25 +1,6 @@
 langcode: en
 status: true
 dependencies:
-<<<<<<< HEAD
-  module:
-    - node
-id: node.field_libcal_url
-field_name: field_libcal_url
-entity_type: node
-type: string
-settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
-module: core
-locked: false
-cardinality: 1
-translatable: true
-indexes: {  }
-persist_with_no_fields: false
-custom_storage: false
-=======
   config:
     - field.storage.node.field_libcal_url
     - node.type.event
@@ -35,4 +16,3 @@ default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: string
->>>>>>> 4002e3b (fix typo on field.storage.node.field_libcal_url.yml and change featured image field name to libcal featured image)
