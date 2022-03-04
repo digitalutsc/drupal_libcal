@@ -6,7 +6,6 @@
     "keywords": [
     ],
     "homepage": "https://www.drupal.org/project/libcal",
-    "minimum-stability": "dev",
     "support": {
         "issues": "https://www.drupal.org/project/issues/libcal",
         "source": "http://cgit.drupalcode.org/libcal"
