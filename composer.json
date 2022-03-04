@@ -1,7 +1,7 @@
 {
     "name": "utlib/drupal_libcal",
     "type": "drupal-module",
-    "version": "0.0.1",
+    "version": "v0.0.1",
     "description": "This module is integrate Libcal API and feed to drupal",
     "keywords": [
     ],
