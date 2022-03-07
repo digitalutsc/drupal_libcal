@@ -1,5 +1,5 @@
 {
-    "name": "libcal",
+    "name": "digitalutsc/drupal_libcal",
     "type": "drupal-module",
     "description": "This module is integrate Libcal API and feed to drupal",
     "keywords": [
@@ -8,6 +8,6 @@
     "minimum-stability": "dev",
     "support": {
         "issues": "https://www.drupal.org/project/issues/libcal",
-        "source": "http://cgit.drupalcode.org/libcal",
+        "source": "http://cgit.drupalcode.org/libcal"
     },
 }
