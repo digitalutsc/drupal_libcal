@@ -9,4 +9,5 @@
         "issues": "https://www.drupal.org/project/issues/libcal",
         "source": "http://cgit.drupalcode.org/libcal"
     },
+    "minimum-stability": "dev"
 }
