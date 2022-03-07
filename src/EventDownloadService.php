@@ -183,8 +183,8 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_presenter' => $event->presenter,
             'field_registration' => $event->registration,
             'field_seats' => $event->seats,
-            'field_seats_taken' => $event->seats_taken,
-            'field_wait_list' => $event->wait_list,
+            'field_seats_taken' => !empty($event->seats_taken)? $event->seats_taken: 0,
+            'field_wait_list' => !empty($event->wait_list) ? $event->wait_list: 0,
             'field_past_event' => 0
         ];
         $node = Node::create($params);
