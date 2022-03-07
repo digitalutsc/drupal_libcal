@@ -1,5 +1,5 @@
 {
-    "name": "digitalutsc/drupal_libcal",
+    "name": "utlib/drupal_libcal",
     "type": "drupal-module",
     "description": "This module is integrate Libcal API and feed to drupal",
     "keywords": [
