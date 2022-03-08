@@ -235,8 +235,8 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_presenter', $event->presenter);
             $eventNode->set('field_registration', $event->registration);
             $eventNode->set('field_seats', $event->seats);
-            $eventNode->set('field_seats_taken', $event->seats_taken);
-            $eventNode->set('field_wait_list', $event->wait_list);
+            $eventNode->set('field_seats_taken',(!empty($event->seats_taken)? $event->seats_taken : 0));
+            $eventNode->set('field_wait_list', (!empty($event->wait_list) ? $event->wait_list: 0));
             $eventNode->set('field_past_event', false);
 
             $eventNode->save();
