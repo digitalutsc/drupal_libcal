@@ -2,6 +2,7 @@
 
 namespace Drupal\libcal;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use GuzzleHttp\Exception\RequestException;
 use Masterminds\HTML5\Exception;
 use Drupal\node\Entity\Node;
@@ -141,14 +142,16 @@ class EventDownloadService implements EventDownloadServiceInterface
      */
     public function createNewEventNode($event)
     {
-        $startdate = explode("-", $event->start);
-        array_pop($startdate);
-        $startdate = implode("-", $startdate);
+        $startdate_obj = new DrupalDateTime($event->start);
+        $startdate_obj->setTimezone(new \DateTimeZone('UTC'));
 
-        $enddate = explode("-", $event->end);
-        array_pop($enddate);
-        $enddate = implode("-", $enddate);
-        // create new event node
+        $startdate = $startdate_obj->format('Y-m-d\TH:i:s');
+
+        $enddate_obj = new DrupalDateTime($event->end);
+        $enddate_obj->setTimezone(new \DateTimeZone('UTC'));
+
+        $enddate = $enddate_obj->format('Y-m-d\TH:i:s');
+
         $params = [
             // The node entity bundle.
             'type' => 'event',
@@ -198,13 +201,16 @@ class EventDownloadService implements EventDownloadServiceInterface
      */
     public function updateEventNode($nids, $event)
     {
-        $startdate = explode("-", $event->start);
-        array_pop($startdate);
-        $startdate = implode("-", $startdate);
 
-        $enddate = explode("-", $event->end);
-        array_pop($enddate);
-        $enddate = implode("-", $enddate);
+        $startdate_obj = new DrupalDateTime($event->start);
+        $startdate_obj->setTimezone(new \DateTimeZone('UTC'));
+
+        $startdate = $startdate_obj->format('Y-m-d\TH:i:s');
+
+        $enddate_obj = new DrupalDateTime($event->end);
+        $enddate_obj->setTimezone(new \DateTimeZone('UTC'));
+
+        $enddate = $enddate_obj->format('Y-m-d\TH:i:s');
 
         // update existing Event node
         $eventNode = Node::load(array_values($nids)[0]);
@@ -220,7 +226,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_start_date', $startdate);
             $eventNode->set('field_end_date', $enddate);
             $eventNode->set('field_libcal_id', $event->id); // need to make sure it's unique
-            $eventNode->set('field_featured_image', $event->featured_image);
+            $eventNode->set('field_libcal_featured_image', $event->featured_image);
             $eventNode->set('field_libcal_url', $event->url->public);
 
             $eventNode->set('field_all_day', $event->allday);
