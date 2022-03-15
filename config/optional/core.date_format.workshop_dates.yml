@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: workshop_dates
+label: 'Workshop dates'
+locked: false
+pattern: 'ga M j, Y'

@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: workshop_day_month
+label: 'workshop day month'
+locked: false
+pattern: 'M j, Y'
