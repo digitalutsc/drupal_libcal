@@ -6,6 +6,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use GuzzleHttp\Exception\RequestException;
 use Masterminds\HTML5\Exception;
 use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Class EventDownloadService.
@@ -69,15 +70,29 @@ class EventDownloadService implements EventDownloadServiceInterface
      */
     public function libcalEventToNode(array $events)
     {
+
         foreach ($events as $event) {
             $nids = $this->queryEventNode($event->id);
-            if (count($nids) <= 0) {
+
+            $categories = $event->category;
+
+            foreach ($categories as $category) {
+                $tid = $category->id;
+                $name = $category->name;
+
+                if (!$this->queryEventCategoryExists($tid)) {
+                    $this->createNewCategoryTerm($tid, $name);
+                }
+            }
+            
+             if (count($nids) <= 0) {
                 $this->createNewEventNode($event);
             } else {
                 $this->updateEventNode($nids, $event);
             }
+            
             // check if future events relate to this event
-            if (count($event->future_dates) > 0) {
+             if (count($event->future_dates) > 0) {
                 $this->libcalFutureEventToNode($event->future_dates);
             }
         }
@@ -112,6 +127,19 @@ class EventDownloadService implements EventDownloadServiceInterface
         $query->condition('field_libcal_id', $event_id);
         return $query->execute();
 
+    }
+
+    public function queryEventCategoryExists($tid) {
+        $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
+        if (isset($term)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function createNewCategoryTerm($tid, $name) {
+        $term_create = Term::create(array('name' => $name, 'tid' => $tid, 'vid' => 'event_categories' ))->save();
     }
 
     public function updatePastFieldEventNode($flag)
@@ -152,6 +180,13 @@ class EventDownloadService implements EventDownloadServiceInterface
 
         $enddate = $enddate_obj->format('Y-m-d\TH:i:s');
 
+        $category_tid_list = array();
+
+        foreach ($event->category as $category) {
+            array_push($category_tid_list,array('target_id' => $category->id));
+        }
+        
+
         $params = [
             // The node entity bundle.
             'type' => 'event',
@@ -180,7 +215,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_campus' => (isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "",
             'field_geolocation' => !empty($event->geolocation) ? $event->geolocation : "",
             //'field_future_dates' => $event->future_dates,
-            //'field_libcal_categories' => $event->category,
+            'field_libcal_categories' => $category_tid_list,
             'field_libcal_color' => $event->color,
             'field_location' => $event->location->name,
             'field_presenter' => $event->presenter,
@@ -212,7 +247,14 @@ class EventDownloadService implements EventDownloadServiceInterface
 
         $enddate = $enddate_obj->format('Y-m-d\TH:i:s');
 
+        $category_tid_list = array();
+
+        foreach ($event->category as $category) {
+            array_push($category_tid_list,array('target_id' => $category->id));
+        }
+
         // update existing Event node
+
         $eventNode = Node::load(array_values($nids)[0]);
         if (isset($eventNode)) {
             $eventNode->set('changed', time());
@@ -235,7 +277,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_campus', (isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "");
             $eventNode->set('field_geolocation', $event->geolocation);
             //$eventNode->set('field_future_dates', $event->future_dates);
-            //$eventNode->set('field_libcal_categories', $event->category);
+            $eventNode->set('field_libcal_categories', $category_tid_list);
             $eventNode->set('field_libcal_color', $event->color);
             $eventNode->set('field_location', $event->location->name);
             $eventNode->set('field_presenter', $event->presenter);
