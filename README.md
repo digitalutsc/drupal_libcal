@@ -14,7 +14,7 @@ This Drupal module provides a method to integrate LibCal Events to Drupal conten
 * Enable this module by Drupal interface or Drush command. 
 * To start configuring the LibCal Rest API infomration by going to Configuration > System > LibCal or visit https://yoursite.com/admin/config/libcal, then fill out the setup form (Screenshot below)
 
-![alt text](https://raw.githubusercontent.com/digitalutsc/drupal_libcal/dist/man_config.png "Configure LibCal Rest API")
+![alt text](https://raw.githubusercontent.com/digitalutsc/drupal_libcal/main/man_config.png "Configure LibCal Rest API")
 
 ## Usage
 
