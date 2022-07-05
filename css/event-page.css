@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+
+body.node--type-event .node__content .field {
+    display: flex;
+    margin-bottom: 0.5em;
+}
+
+body.node--type-event .node__content .field .field__item {
+    word-break: break-word;
+}
+
+body.node--type-event .node__content .field .field__label {
+    font-weight: 900;
+}
+
+body.node--type-event .node__content .field .field__label::after {
+    content: ':';
+}
+
+@media screen and (min-width: 768px) {
+    body.node--type-event .node__content .field .field__item {
+       flex-basis: 85%;
+    }
+    
+    body.node--type-event .node__content .field .field__label {
+        flex-basis: 15%;
+    }    
+}
+@media screen and (max-width: 767px) {
+    body.node--type-event .node__content .field {
+        gap: 0.5em;
+    }
+}
+
+.block-views-blockworkshop-events-block-1 .list{
+    padding: 0 5% 25px;
+}
+
+.block-views-blockworkshop-events-block-1 .list h3{
+    padding: 10px 0;
+    margin: 0;
+}
+
+.block-views-blockworkshop-events-block-1 .list p{
+    padding: 0;
+    margin-bottom: 0;
+    display: inline;
+}

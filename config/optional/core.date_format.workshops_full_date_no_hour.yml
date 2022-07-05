@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: workshops_full_date_no_hour
+label: 'Workshops full date no hour'
+locked: false
+pattern: 'l, F j, Y'

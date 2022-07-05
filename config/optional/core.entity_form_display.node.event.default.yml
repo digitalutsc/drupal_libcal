@@ -8,11 +8,11 @@ dependencies:
     - field.field.node.event.field_calendar_name
     - field.field.node.event.field_campus
     - field.field.node.event.field_end_date
-    - field.field.node.event.field_featured_image
     - field.field.node.event.field_future_dates
     - field.field.node.event.field_geolocation
     - field.field.node.event.field_libcal_categories
     - field.field.node.event.field_libcal_color
+    - field.field.node.event.field_libcal_featured_image
     - field.field.node.event.field_libcal_id
     - field.field.node.event.field_libcal_url
     - field.field.node.event.field_location
@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.event.field_wait_list
     - node.type.event
   module:
+    - datetime
     - path
     - text
 id: node.event.default
@@ -34,14 +35,14 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 7
+    weight: 8
+    region: content
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
       show_summary: false
     third_party_settings: {  }
-    region: content
   created:
     type: datetime_timestamp
     weight: 2
@@ -49,159 +50,155 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_all_day:
-    weight: 9
+    type: boolean_checkbox
+    weight: 20
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_calendar_id:
-    weight: 25
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
     type: number
+    weight: 27
     region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_calendar_name:
+    type: string_textfield
     weight: 26
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_campus:
-    weight: 14
+    type: string_textfield
+    weight: 25
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_end_date:
-    weight: 11
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
+    type: datetime_default
+    weight: 13
     region: content
-  field_featured_image:
-    weight: 22
-    settings:
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_future_dates:
+    type: string_textfield
     weight: 24
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_geolocation:
+    type: string_textfield
     weight: 23
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_libcal_categories:
-    weight: 15
+    type: entity_reference_autocomplete
+    weight: 22
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_libcal_color:
+    type: string_textfield
     weight: 21
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_libcal_featured_image:
     type: string_textfield
-    region: content
-  field_libcal_id:
-    weight: 8
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_libcal_url:
-    weight: 12
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_location:
-    weight: 13
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_presenter:
-    weight: 16
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_registration:
-    weight: 18
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_seats:
-    weight: 17
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_seats_taken:
     weight: 19
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
     region: content
-  field_start_date:
-    weight: 10
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_libcal_id:
     type: string_textfield
+    weight: 9
     region: content
-  field_wait_list:
-    weight: 20
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_libcal_url:
+    type: string_textfield
+    weight: 18
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_location:
+    type: string_textfield
+    weight: 17
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_past_event:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_presenter:
+    type: string_textfield
+    weight: 15
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_registration:
+    type: number
+    weight: 14
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_seats:
     type: number
-    region: content
-  langcode:
-    type: language_select
-    weight: 2
+    weight: 11
     region: content
     settings:
-      include_locked: true
+      placeholder: ''
+    third_party_settings: {  }
+  field_seats_taken:
+    type: number
+    weight: 10
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_start_date:
+    type: datetime_default
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_wait_list:
+    type: number
+    weight: 28
+    region: content
+    settings:
+      placeholder: ''
     third_party_settings: {  }
   path:
     type: path
@@ -211,24 +208,24 @@ content:
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 3
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
+    weight: 7
+    region: content
     settings:
       display_label: true
-    weight: 6
-    region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 4
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -241,12 +238,16 @@ content:
   uid:
     type: entity_reference_autocomplete
     weight: 1
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
-hidden:
-  field_past_event: true
+  url_redirects:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

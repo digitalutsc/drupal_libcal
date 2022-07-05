@@ -7,6 +7,10 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 
+function libcal_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'libcal/libcal';
+}
+
 /**
  * Implements hook_help().
  */
