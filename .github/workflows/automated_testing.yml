@@ -1,0 +1,11 @@
+name: Automated testing
+
+on: [push]
+
+jobs:
+  call-testing-workflow:
+    uses: digitalutsc/reusable_workflows/.github/workflows/ci-testing.yml@main
+    with:
+      module_name: drupal_libcal
+      composer_name: digitalutsc/drupal_libcal
+      test_suite: functional
