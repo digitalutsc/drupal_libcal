@@ -3,7 +3,7 @@
     "type": "drupal-module",
     "description": "This module is integrate Libcal API and feed to drupal.",
     "keywords": [
-        "Libcal",
+        "Libcal"
     ],
     "license": "GPL-2.0-only",
     "homepage": "https://www.drupal.org/project/drupal_libcal",
