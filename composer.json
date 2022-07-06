@@ -19,7 +19,7 @@
         }
     },
     "require": {
-        "drupal/menu_ui": "*",
+        "drupal/menu_ui": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",
