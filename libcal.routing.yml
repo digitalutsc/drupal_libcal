@@ -4,6 +4,6 @@ libcal.libcal_api_config_form:
     _form: '\Drupal\libcal\Form\LibcalAPIConfigForm'
     _title: 'LibCal Integration'
   requirements:
-    _permission: 'access administration pages'
+    _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
