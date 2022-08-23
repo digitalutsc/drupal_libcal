@@ -149,7 +149,7 @@ class EventDownloadService implements EventDownloadServiceInterface
         //$query->condition('field_past_event', false);
         $nids  = $query->execute();
         foreach ($nids as $nid) {
-            $eventnode = \Drupal\node\Entity\Node::load($nid);
+            $eventnode = Node::load($nid);
             //$eventnode->set('field_past_event', $flag);
 
             // check if current timestamp with event timestamp

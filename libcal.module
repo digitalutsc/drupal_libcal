@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Entity\EntityInterface;
 /**
  * @file
  * Contains libcal.module.
@@ -125,7 +126,7 @@ function generateEventAlias($node)
 /**
  * Implements hook_insert().
  */
-function libcal_entity_insert(\Drupal\Core\Entity\EntityInterface $node)
+function libcal_entity_insert(EntityInterface $node)
 {
     // Set the URL alias
     //if (get_class($node) == 'Drupal\node\Entity\Node') {
@@ -143,7 +144,7 @@ function libcal_entity_insert(\Drupal\Core\Entity\EntityInterface $node)
     }
 }
 
-function libcal_entity_update(\Drupal\Core\Entity\EntityInterface $node)
+function libcal_entity_update(EntityInterface $node)
 {
     // Set the URL alias
     //if (get_class($node) == 'Drupal\node\Entity\Node') {
