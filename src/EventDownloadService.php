@@ -84,13 +84,13 @@ class EventDownloadService implements EventDownloadServiceInterface
                     $this->createNewCategoryTerm($tid, $name);
                 }
             }
-            
+
              if (count($nids) <= 0) {
                 $this->createNewEventNode($event);
             } else {
                 $this->updateEventNode($nids, $event);
             }
-            
+
             // check if future events relate to this event
              if (count($event->future_dates) > 0) {
                 $this->libcalFutureEventToNode($event->future_dates);
@@ -185,7 +185,7 @@ class EventDownloadService implements EventDownloadServiceInterface
         foreach ($event->category as $category) {
             array_push($category_tid_list,array('target_id' => $category->id));
         }
-        
+
 
         $params = [
             // The node entity bundle.
@@ -213,7 +213,6 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_calendar_id' => $event->calendar->id,
             'field_calendar_name' => $event->calendar->name,
             'field_campus' => (isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "",
-            'field_geolocation' => !empty($event->geolocation) ? $event->geolocation : "",
             //'field_future_dates' => $event->future_dates,
             'field_libcal_categories' => $category_tid_list,
             'field_libcal_color' => $event->color,
@@ -223,8 +222,12 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_seats' => $event->seats,
             'field_seats_taken' => !empty($event->seats_taken)? $event->seats_taken: 0,
             'field_wait_list' => !empty($event->wait_list) ? $event->wait_list: 0,
-            'field_past_event' => 0
+            'field_past_event' => 0,
+            'field_geolocation_latitude' => $event->geolocation->latitude,
+            'field_geolocation_longitude' => $event->geolocation->longitude,
+            'field_geolocation_place_id' => $event->geolocation->{'place-id'}
         ];
+
         $node = Node::create($params);
         $node->save();
 
@@ -275,7 +278,6 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_calendar_id', $event->calendar->id);
             $eventNode->set('field_calendar_name', $event->calendar->name);
             $eventNode->set('field_campus', (isset($event->campus) && is_object($event->campus) && isset($event->campus->name)) ? $event->campus->name : "");
-            $eventNode->set('field_geolocation', $event->geolocation);
             //$eventNode->set('field_future_dates', $event->future_dates);
             $eventNode->set('field_libcal_categories', $category_tid_list);
             $eventNode->set('field_libcal_color', $event->color);
@@ -286,6 +288,9 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_seats_taken',(!empty($event->seats_taken)? $event->seats_taken : 0));
             $eventNode->set('field_wait_list', (!empty($event->wait_list) ? $event->wait_list: 0));
             $eventNode->set('field_past_event', false);
+            $eventNode->set('field_geolocation_latitude', $event->geolocation->latitude);
+            $eventNode->set('field_geolocation_longitude', $event->geolocation->longitude);
+            $eventNode->set('field_geolocation_place_id', $event->geolocation->{'place-id'});
 
             $eventNode->save();
         }
