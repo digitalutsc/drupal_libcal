@@ -96,7 +96,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_geolocation_latitude:
-    type: string_textfield
+    type: number
     weight: 23
     region: content
     settings:
@@ -104,7 +104,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_geolocation_longitude:
-    type: string_textfield
+    type: number
     weight: 23
     region: content
     settings:

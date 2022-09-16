@@ -95,7 +95,7 @@ content:
     weight: 17
     region: content
   field_geolocation_latitude:
-    type: string
+    type: number_float
     label: above
     settings:
       link_to_entity: false
@@ -103,7 +103,7 @@ content:
     weight: 16
     region: content
   field_geolocation_longitude:
-    type: string
+    type: number_float
     label: above
     settings:
       link_to_entity: false

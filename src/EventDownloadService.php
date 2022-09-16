@@ -223,9 +223,9 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_seats_taken' => !empty($event->seats_taken)? $event->seats_taken: 0,
             'field_wait_list' => !empty($event->wait_list) ? $event->wait_list: 0,
             'field_past_event' => 0,
-            'field_geolocation_latitude' => $event->geolocation->latitude,
-            'field_geolocation_longitude' => $event->geolocation->longitude,
-            'field_geolocation_place_id' => $event->geolocation->{'place-id'}
+            'field_geolocation_latitude' => (isset($event->geolocation->latitude)) ? $event->geolocation->latitude : null,
+            'field_geolocation_longitude' => (isset($event->geolocation->longitude)) ? $event->geolocation->longitude : null,
+            'field_geolocation_place_id' => (isset($event->geolocation->{'place-id'})) ? $event->geolocation->{'place-id'} : null
         ];
 
         $node = Node::create($params);
@@ -288,9 +288,10 @@ class EventDownloadService implements EventDownloadServiceInterface
             $eventNode->set('field_seats_taken',(!empty($event->seats_taken)? $event->seats_taken : 0));
             $eventNode->set('field_wait_list', (!empty($event->wait_list) ? $event->wait_list: 0));
             $eventNode->set('field_past_event', false);
-            $eventNode->set('field_geolocation_latitude', $event->geolocation->latitude);
-            $eventNode->set('field_geolocation_longitude', $event->geolocation->longitude);
-            $eventNode->set('field_geolocation_place_id', $event->geolocation->{'place-id'});
+
+            $eventNode->set('field_geolocation_latitude', (isset($event->geolocation->latitude)) ? $event->geolocation->latitude : null);
+            $eventNode->set('field_geolocation_longitude', (isset($event->geolocation->longitude)) ? $event->geolocation->longitude : null);
+            $eventNode->set('field_geolocation_place_id', (isset($event->geolocation->{'place-id'})) ? $event->geolocation->{'place-id'} : null);
 
             $eventNode->save();
         }
