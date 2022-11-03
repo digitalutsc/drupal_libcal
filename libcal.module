@@ -47,7 +47,6 @@ function libcal_theme()
 function libcal_cron()
 {
    startDownloadLibCalEvents();
-
 }
 
 /**
@@ -60,36 +59,25 @@ function startDownloadLibCalEvents() {
   // set all event exist to pasted then turn on any event downlaodeable from Libcal will be turn off
   $service->updatePastFieldEventNode(true);
 
-  // Download events regards to the calenedar id(s)
-  if (!empty($config->get('calendar-id')) || $config->get('tags') != -1 ) {
-    $ids = $config->get('calendar-id');
-    if(strpos($ids, ',') !== false ) {
-      $calendar_ids = explode(',', $ids);
-      foreach ($calendar_ids as $cid) {
-        $result = $service->get("events?cal_id=". $cid)->events;
-        $service->libcalEventToNode($result);
-      }
-    }else {
-      $result = $service->get("events?cal_id=". $ids)->events;
+  // Download events regards to the calendar id(s)
+  if (!empty($config->get('calendar-id')) && $config->get('calendar-id') != -1 ) {
+    $calendar_ids = explode(',', $config->get('calendar-id'));
+
+    foreach ($calendar_ids as $cid) {
+      $result = $service->get("events?cal_id=$cid&limit=100")->events;
       $service->libcalEventToNode($result);
     }
   }
 
   // Download events regards to tag id(s)
-  if (!empty($config->get('tags'))  || $config->get('tags') != -1 ) {
-    $tags = $config->get('tags');
-    if(strpos($tags, ',') !== false ) {
-      $tag_ids = explode(',', $tags);
-      foreach ($tag_ids as $tid) {
-        $result =  $service->get("event_search?search=*&tag=$tid&limit=100")->events;
-        $service->libcalEventToNode($result);
-      }
-    }else {
-      $result =$service->get("event_search?search=*&tag=$tags&limit=100")->events;
+  if (!empty($config->get('tags')) && $config->get('tags') != -1 ) {
+    $tag_ids = explode(',', $config->get('tags'));
+
+    foreach ($tag_ids as $tid) {
+      $result =  $service->get("event_search?search=*&tag=$tid&limit=100")->events;
       $service->libcalEventToNode($result);
     }
   }
-
 }
 
 /**
