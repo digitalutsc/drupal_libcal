@@ -56,28 +56,31 @@ function startDownloadLibCalEvents() {
   $config = \Drupal::config('libcal.libcalapiconfig');
   $service = \Drupal::service('libcal.download');
 
-  // set all event exist to pasted then turn on any event downlaodeable from Libcal will be turn off
-  $service->updatePastFieldEventNode(true);
+  // Download events
+  $calendar_ids = explode(',', $config->get('calendar-id'));
+  $limit = $config->get('limit');
+  $days = $config->get('days');
+  $tags = $config->get('tags');
 
-  // Download events regards to the calendar id(s)
-  if (!empty($config->get('calendar-id')) && $config->get('calendar-id') != -1 ) {
-    $calendar_ids = explode(',', $config->get('calendar-id'));
+  $query = "events?limit=$limit&days=$days";
 
-    foreach ($calendar_ids as $cid) {
-      $result = $service->get("events?cal_id=$cid&limit=100")->events;
-      $service->libcalEventToNode($result);
-    }
+  // Append the tags if present.
+  // Libcal API accepts a comma separated string so no need to explode()
+  // The -1 is to ease transition from the way this module was previously coded
+  if ($tags != "" && $tags != "-1") { $query .= "&$tags"; }
+
+  $events = [];
+
+  foreach ($calendar_ids as $cid) {
+    $result = $service->get("$query&cal_id=$cid", $config)->events;
+    $events = array_merge($events, $result);
   }
 
-  // Download events regards to tag id(s)
-  if (!empty($config->get('tags')) && $config->get('tags') != -1 ) {
-    $tag_ids = explode(',', $config->get('tags'));
-
-    foreach ($tag_ids as $tid) {
-      $result =  $service->get("event_search?search=*&tag=$tid&limit=100")->events;
-      $service->libcalEventToNode($result);
-    }
-  }
+  $service->libcalEventToNode($events);
+  // Deal with past events
+  $service->updatePastFieldEventNode($config);
+  // Deal with events that have been deleted from libcal
+  $service->deleteEventNodes($events);
 }
 
 /**
