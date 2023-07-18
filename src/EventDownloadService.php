@@ -291,6 +291,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             $newNode->save();
         } else {
             $currentNode = Node::load(array_values($nids)[0]);
+            $updateRequired = false;
 
             foreach ($libcalFields as $libcalField) {
                 // Get the currently set and expected values
