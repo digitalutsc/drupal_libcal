@@ -67,7 +67,7 @@ function startDownloadLibCalEvents() {
   // Append the tags if present.
   // Libcal API accepts a comma separated string so no need to explode()
   // The -1 is to ease transition from the way this module was previously coded
-  if ($tags != "" && $tags != "-1") { $query .= "&$tags"; }
+  if ($tags != "" && $tags != "-1") { $query .= "&tag=$tags"; }
 
   $events = [];
 
