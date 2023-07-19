@@ -215,15 +215,16 @@ class EventDownloadService implements EventDownloadServiceInterface
             array_push($category_tid_list, array('target_id' => $category->id));
         }
 
-        $params = [
+        $nodeParams = [
             // The node entity bundle.
             'type' => 'event',
             'langcode' => 'en',
             // The user ID.
             'uid' => 1,
-            'moderation_state' => 'published',
+            'moderation_state' => 'published'
+        ];
 
-            // libcal fields
+        $libcalParams = [
             'title' => $event->title,
             'body' => [
                 'summary' => substr(strip_tags($event->description), 0, 100),
@@ -253,33 +254,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             'field_geolocation_place_id' => (isset($event->geolocation->{'place-id'})) ? $event->geolocation->{'place-id'} : null
         ];
 
-        $newNode = Node::create($params);
-
-        $libcalFields = [
-            'title',
-            'body',
-            'field_start_date',
-            'field_end_date',
-            'field_libcal_id',
-            'field_libcal_featured_image',
-            'field_libcal_url',
-            'field_all_day',
-            'field_calendar_id',
-            'field_calendar_name',
-            'field_campus',
-            'field_libcal_categories',
-            'field_libcal_color',
-            'field_location',
-            'field_presenter',
-            'field_registration',
-            'field_seats',
-            'field_seats_taken',
-            'field_wait_list',
-            'field_past_event',
-            'field_geolocation_latitude',
-            'field_geolocation_longitude',
-            'field_geolocation_place_id'
-        ];
+        $newNode = Node::create(array_merge($nodeParams, $libcalParams));
 
         // Determine if we should create a new node, or update an existing one
         $nids = $this->queryEventNode($event->id);
@@ -293,7 +268,7 @@ class EventDownloadService implements EventDownloadServiceInterface
             $currentNode = Node::load(array_values($nids)[0]);
             $updateRequired = false;
 
-            foreach ($libcalFields as $libcalField) {
+            foreach (array_keys($libcalParams) as $libcalField) {
                 // Get the currently set and expected values
                 $cv = $currentNode->get($libcalField)->value;
                 $nv = $newNode->get($libcalField)->value;
@@ -301,9 +276,21 @@ class EventDownloadService implements EventDownloadServiceInterface
                 // If they do not match
                 if ($cv != $nv) {
                     $updateRequired = true;
-                    $currentNode->set($libcalField, $nv);
+                    // body field requires special treatment
+                    $b = 'body';
+                    if ($libcalField == $b) {
+                        $currentNode->set(
+                            $b,
+                            [
+                                'summary' => $newNode->get($b)->summary,
+                                'value' => $newNode->get($b)->value,
+                                'format' => 'full_html'
+                            ]
+                        );
+                    } else {
+                        $currentNode->set($libcalField, $nv);
+                    }
                 }
-
             }
 
             // Only update the node if there were changes
