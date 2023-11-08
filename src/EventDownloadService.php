@@ -109,6 +109,7 @@ class EventDownloadService implements EventDownloadServiceInterface
     public function queryEventNode($event_id)
     {
         $query = \Drupal::entityQuery('node');
+        $query->accessCheck(FALSE);
         $query->condition('status', 1);
         $query->condition('type', 'event');
         $query->condition('field_libcal_id', $event_id);
@@ -136,6 +137,7 @@ class EventDownloadService implements EventDownloadServiceInterface
         // Begin constructing the query
         // All event types with a start date in the past
         $query = \Drupal::entityQuery('node');
+        $query->accessCheck(FALSE);
         $query->condition('type', 'event');
         $query->condition('field_start_date', $now, '<');
 
@@ -178,6 +180,7 @@ class EventDownloadService implements EventDownloadServiceInterface
 
         // Get all future events
         $query = \Drupal::entityQuery('node');
+        $query->accessCheck(FALSE);
         $query->condition('type', 'event');
         $query->condition('field_start_date', $now, '>=');
         $nids = $query->execute();
