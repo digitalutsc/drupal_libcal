@@ -9,7 +9,9 @@ dependencies:
     - field.field.node.event.field_campus
     - field.field.node.event.field_end_date
     - field.field.node.event.field_future_dates
-    - field.field.node.event.field_geolocation
+    - field.field.node.event.field_geolocation_latitude
+    - field.field.node.event.field_geolocation_longitude
+    - field.field.node.event.field_geolocation_place_id
     - field.field.node.event.field_libcal_categories
     - field.field.node.event.field_libcal_color
     - field.field.node.event.field_libcal_featured_image
@@ -93,7 +95,23 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_geolocation:
+  field_geolocation_latitude:
+    type: number
+    weight: 23
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_geolocation_longitude:
+    type: number
+    weight: 23
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_geolocation_place_id:
     type: string_textfield
     weight: 23
     region: content

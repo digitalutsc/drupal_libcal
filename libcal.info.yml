@@ -1,6 +1,6 @@
 name: 'LibCal Integration'
 type: module
-description: 'This module is integrate Libcal API and feed to drupal'
+description: 'Synchronizes Libcal events into Drupal'
 core_version_requirement: ^8.8 || ^9 || ^10
 package: DSU
 dependencies:

@@ -1,7 +1,7 @@
 {
     "name": "digitalutsc/drupal_libcal",
     "type": "drupal-module",
-    "description": "This module is integrate Libcal API and feed to drupal.",
+    "description": "Synchronizes Libcal events into Drupal",
     "keywords": [
         "Libcal"
     ],
@@ -17,9 +17,6 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
-    },
-    "require": {
-        "drupal/menu_ui": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8",

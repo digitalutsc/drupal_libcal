@@ -11,7 +11,9 @@ dependencies:
     - field.field.node.event.field_end_date
     - field.field.node.event.field_featured_image
     - field.field.node.event.field_future_dates
-    - field.field.node.event.field_geolocation
+    - field.field.node.event.field_geolocation_latitude
+    - field.field.node.event.field_geolocation_longitude
+    - field.field.node.event.field_geolocation_place_id
     - field.field.node.event.field_libcal_categories
     - field.field.node.event.field_libcal_color
     - field.field.node.event.field_libcal_id
@@ -54,7 +56,9 @@ hidden:
   field_end_date: true
   field_featured_image: true
   field_future_dates: true
-  field_geolocation: true
+  field_geolocation_latitude: true
+  field_geolocation_longitude: true
+  field_geolocation_place_id: true
   field_libcal_categories: true
   field_libcal_color: true
   field_libcal_id: true
