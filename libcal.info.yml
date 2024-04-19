@@ -1,7 +1,7 @@
 name: 'LibCal Integration'
 type: module
 description: 'Synchronizes Libcal events into Drupal'
-core_version_requirement: ^8.8 || ^9 || ^10
+core_version_requirement: ^8.8 || ^9 || ^10 || ^11
 package: DSU
 dependencies:
   - menu_ui:menu_ui
