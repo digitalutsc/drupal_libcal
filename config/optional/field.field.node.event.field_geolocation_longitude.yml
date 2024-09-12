@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_geolocation_longitude
+    - node.type.event
+id: node.event.field_geolocation_longitude
+field_name: field_geolocation_longitude
+entity_type: node
+bundle: event
+label: Geolocation Longitude
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: float
